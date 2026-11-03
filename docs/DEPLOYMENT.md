@@ -179,6 +179,7 @@ systemd, e permita que esse usuário escreva em `apps/hub/data`.
 ### Verificar antes de iniciar os serviços
 
 ```bash
+set -e
 node --version
 pnpm --version
 pnpm validate:arch
@@ -190,6 +191,17 @@ docker compose --env-file deploy/.env -f deploy/docker-compose.yml config
 
 O último comando valida a configuração resolvida do Docker Compose. Não
 publique o resultado se ele incluir valores secretos.
+
+O comando deve incluir o subcomando `config` e o caminho do arquivo
+`-f deploy/docker-compose.yml`; rodar apenas `docker compose
+--env-file deploy/.env` mostra a ajuda do Docker, não valida o deploy. `set -e`
+faz a sequência parar imediatamente no primeiro comando com erro.
+
+Se `pnpm validate:arch` disser que não encontra arquivos em `.cline`, atualize
+o clone para a versão do repositório que inclui o validador independente em
+`scripts/validate-architecture.mjs`. `.cline` e `.clinerules` são diretórios
+locais ignorados pelo Git e não devem ser pré-requisitos para publicar o
+aplicativo.
 
 ## 3. Iniciar em produção
 

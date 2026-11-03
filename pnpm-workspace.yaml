@@ -4,10 +4,11 @@ packages:
   - "addons/*"
 
 # Dependências autorizadas a executar scripts de build pós-instalação
-# (native addon do SQLite, binário do Electron, esbuild do tsx/Vite e o
-# binding nativo do rolldown usado pelo Vite 8).
+# (native addon do SQLite, binário do Electron, esbuild do tsx/Vite, binding
+# nativo do rolldown e empacotador Windows usado pelo electron-builder).
 allowBuilds:
   better-sqlite3: true
   electron: true
+  electron-winstaller: true
   esbuild: true
   "@rolldown/binding-win32-x64-msvc": true

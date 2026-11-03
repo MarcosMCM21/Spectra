@@ -11,6 +11,7 @@
 ## Fase 0: Prova de Rede e Engenharia de Mídia (Concluída)
 - [x] `deploy/docker-compose.yml`, `deploy/livekit.yaml`, `deploy/Caddyfile` e `deploy/.env.example` configurados; `.env` de produção permanece local, privado e não versionado.
 - [x] Deploy Linux/CasaOS documentado em `docs/DEPLOYMENT.md`: testes locais, build, serviço systemd do Hub, Caddy servindo Web estática, LiveKit em host network, segredos, firewall e atualização. Caddy encaminha Hub/LiveKit por loopback; export CasaOS redundante removido. Validação no servidor ainda pendente.
+- [x] Corrigidos blockers de clone limpo reportados no log do servidor: `scripts/validate-architecture.mjs` independente dos diretórios `.cline` ignorados, dependência direta `zod` no Hub e allowlist do `electron-winstaller`; pnpm install `--frozen-lockfile`, typecheck e build validados localmente.
 
 ## Fase 1: MVP Web com Salas Fixas, Showroom e Moderação (Semanas 1 a 2)
 - [x] Setup do Monorepo (`pnpm-workspace.yaml`, `turbo.json`, `packages/contracts`). **Concluído:** grafo de dependências em ordem topológica via `^build` — `contracts` → `media-client` / `shared-ui` / `addon-sdk` → `hub` → `web` / `desktop`; `pnpm install` + `typecheck` (10/10) + `build` (7/7) verdes.
