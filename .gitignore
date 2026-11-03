@@ -1,0 +1,64 @@
+# ============================================================
+# Variáveis de ambiente e segredos (NUNCA COMMITAR)
+# ============================================================
+.env
+deploy/.env
+*.env
+*.env.local
+*.env.*
+!.env.example
+!**/.env.example
+
+# ============================================================
+# Chaves privadas e certificados locais
+# ============================================================
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# ============================================================
+# Banco de dados SQLite e volumes locais
+# ============================================================
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ============================================================
+# Dependências, caches e builds do Monorepo
+# ============================================================
+node_modules/
+dist/
+build/
+out/
+release/
+.turbo/
+.vite/
+.cache/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# ============================================================
+# Logs e arquivos de sistema / IDE
+# ============================================================
+*.log
+*.log.*
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+*.swp
+*.swo
+
+# ============================================================
+# IA
+# ============================================================
+.cline
+.clinerules

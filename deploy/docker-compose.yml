@@ -1,0 +1,34 @@
+services:
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: livekit
+    restart: unless-stopped
+    command: ["--config", "/etc/livekit.yaml"]
+    environment:
+      LIVEKIT_KEYS: "${LIVEKIT_API_KEY:?Defina LIVEKIT_API_KEY em deploy/.env}: ${LIVEKIT_API_SECRET:?Defina LIVEKIT_API_SECRET em deploy/.env}"
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    # CasaOS/Linux host networking: LiveKit binds directly to the host interfaces.
+    network_mode: host
+
+  caddy:
+    image: serfriz/caddy-duckdns:latest
+    container_name: caddy
+    restart: unless-stopped
+    environment:
+      DUCKDNS_TOKEN: "${DUCKDNS_TOKEN:?Defina DUCKDNS_TOKEN em deploy/.env}"
+      DOMAIN: "${DOMAIN:?Defina DOMAIN em deploy/.env}"
+      CADDY_HTTPS_PORT: "${CADDY_HTTPS_PORT:-8443}"
+      LIVEKIT_UPSTREAM: "${LIVEKIT_UPSTREAM:-127.0.0.1:7880}"
+      HUB_PORT: "${HUB_PORT:-3001}"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../apps/web/dist:/srv/spectra/web:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    # Allows Caddy to reach the host Hub and LiveKit on loopback.
+    network_mode: host
+
+volumes:
+  caddy_data:
+  caddy_config:

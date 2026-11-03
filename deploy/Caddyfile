@@ -1,0 +1,29 @@
+{$DOMAIN}:{$CADDY_HTTPS_PORT:8443} {
+    tls {
+        dns duckdns {env.DUCKDNS_TOKEN}
+    }
+
+    handle /healthz {
+        reverse_proxy 127.0.0.1:{$HUB_PORT:3001}
+    }
+
+    # Hub executado no host pelo serviço systemd.
+    handle /api/* {
+        reverse_proxy 127.0.0.1:{$HUB_PORT:3001}
+    }
+
+    # 2. Sinalização WebSocket e API Twirp do LiveKit
+    @livekit {
+        path /rtc* /twirp*
+    }
+    handle @livekit {
+        reverse_proxy {$LIVEKIT_UPSTREAM:livekit:7880}
+    }
+
+    # Frontend compilado servido como arquivos estáticos.
+    handle {
+        root * /srv/spectra/web
+        try_files {path} /index.html
+        file_server
+    }
+}

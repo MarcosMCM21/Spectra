@@ -1,0 +1,22 @@
+{
+  "name": "spectra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma self-hosted de compartilhamento de tela 4K60 e mídia sincronizada (Addons) para grupos fechados.",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "validate:arch": "node scripts/validate-architecture.mjs",
+    "sync:cline": "node scripts/sync-cline-workspace.mjs"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.10",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@spectra/hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend Fastify (:3001) + SQLite: Salas Fixas (slug), Chave de Criador Persistente, JWT LiveKit sem microfone e ações de moderação.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "node --env-file-if-exists=../../deploy/.env.local --import tsx --watch --watch-path=src src/index.ts",
+    "start": "node --env-file-if-exists=../../deploy/.env dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "@livekit/protocol": "^1.53.1",
+    "@spectra/contracts": "workspace:*",
+    "better-sqlite3": "^13.0.3",
+    "fastify": "^5.12.7",
+    "livekit-server-sdk": "^2.19.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@spectra/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Aplicativo Spectra para Windows com captura de tela nativa e UI Web empacotada.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "package:win": "pnpm --filter @spectra/web build && pnpm run build && electron-builder --win nsis zip",
+    "dev": "tsc -p tsconfig.json && electron .",
+    "start": "electron .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0",
+    "typescript": "^5.9.3"
+  },
+  "build": {
+    "appId": "com.spectra.desktop",
+    "productName": "Spectra",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../web/dist",
+        "to": "web",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
