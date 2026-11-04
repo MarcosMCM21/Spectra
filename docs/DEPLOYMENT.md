@@ -266,8 +266,44 @@ curl -I https://<seu-dominio>:8443/healthz
 ```
 
 O primeiro teste é local no host. Os demais verificam TLS, Web e o caminho de
-proxy do Hub. Faça também um teste real entrando em uma sala e compartilhando
-tela; compilar e receber HTTP 200 não validam a conectividade UDP do LiveKit.
+proxy do Hub. A página inicial deve retornar `HTTP/1.1 200 OK` com
+`Content-Type: text/html`; o `/healthz` deve retornar `200 OK` e JSON.
+Para abrir a Web, acesse `https://<seu-dominio>:8443/` em um navegador, por
+exemplo `https://optimus-stream.duckdns.org:8443/`.
+
+Se `/healthz` responde, mas `/` retorna `404`, o Caddy está alcançável e o
+proxy para o Hub está funcionando; o problema está especificamente nos
+arquivos estáticos da Web (build ausente, volume não montado ou container
+iniciado por uma configuração CasaOS antiga). No servidor, execute na raiz do
+clone:
+
+```bash
+cd /DATA/AppData/spectra
+test -s apps/web/dist/index.html && echo "Web build encontrada" || echo "Web build ausente"
+docker inspect caddy --format '{{range .Mounts}}{{println .Source "->" .Destination}}{{end}}'
+docker exec caddy ls -la /srv/spectra/web
+```
+
+O `docker inspect` deve mostrar `.../apps/web/dist -> /srv/spectra/web`, e o
+`ls` no container deve mostrar `index.html` e `assets/`. Se a build estiver
+ausente, gere-a e recrie o Caddy usando o Compose do clone:
+
+```bash
+pnpm build
+docker compose --env-file deploy/.env -f deploy/docker-compose.yml up -d --force-recreate caddy
+```
+
+Se o bind mount exibido por `docker inspect` não apontar para
+`/DATA/AppData/spectra/apps/web/dist`, o Caddy está sendo executado por outro
+Compose ou pela definição antiga do CasaOS. Suba/recrie-o pelo comando acima
+e confira os logs:
+
+```bash
+docker compose --env-file deploy/.env -f deploy/docker-compose.yml logs --tail=100 caddy
+```
+
+Faça também um teste real entrando em uma sala e compartilhando tela; compilar
+e receber HTTP 200 não validam a conectividade UDP do LiveKit.
 
 ## 4. Atualizar uma instalação existente
 
